@@ -1,0 +1,44 @@
+<html>
+  <body>
+    <script blocking="render">
+      let FETCH_URL="https://bidding-auction-server.example.com/cgi-bin/fake_ad_server.py";
+      let SELLER = 'https://bidding-auction-server.example.com';
+      let buyer = SELLER;
+      navigator.getInterestGroupAdAuctionData({seller: SELLER})
+        .then((data)=>{
+          if (data.request.length == 0) {
+            return Promise.reject("Got no data");
+          }
+          let b64Data = btoa(String.fromCharCode.apply(null, data.request)).replaceAll('+', '-').replaceAll('/', '_');
+          console.log(b64Data);
+          let fetch_url = FETCH_URL + "?data=" + b64Data;
+          fetch(fetch_url, {method: 'get', adAuctionHeaders: true})
+          .then((http_response)=> {
+            console.log(http_response.url);
+            console.log(http_response.type);
+            console.log(http_response.redirected);
+            console.log(http_response.status);
+            console.log(http_response.statusText);
+            console.log(Array.from(http_response.headers.entries()));
+            return http_response.text();
+          })
+          .then((response) => {
+            console.log(response);
+            let responseJSON = JSON.parse(response);
+            let responseStr = responseJSON.auctionResultCiphertext;
+            let responseArray = Uint8Array.from(atob(responseStr), c => c.charCodeAt(0));
+            return navigator.runAdAuction({
+              seller: SELLER,
+              decisionLogicURL: SELLER,
+              interestGroupBuyers: [buyer],
+              serverResponse: responseArray,
+              requestId: data.requestId,
+            });
+          })
+          .then( (urn) => { console.log(JSON.stringify(urn)); })
+          .catch(console.error);
+        })
+        .catch(console.error);
+   </script>
+  </body>
+</html>

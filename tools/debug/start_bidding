@@ -21,7 +21,7 @@ else
     SERVER_DIR="$1"/execroot/__main__/bazel-out/k8-opt/bin
 fi
 
-export GLOG_v=2
+export GLOG_v=10
 export GLOG_logtostderr=1
 export GLOG_stderrthreshold=0
 export GRPC_DNS_RESOLVER=native
@@ -37,8 +37,8 @@ export GRPC_DNS_RESOLVER=native
 --roma_timeout_ms="120000" \
 --buyer_code_fetch_config='{
       "biddingJsPath": "",
-      "biddingJsUrl": "https://td.doubleclick.net/td/bjs",
-      "protectedAppSignalsBiddingJsUrl": "https://td.doubleclick.net/td/bjs",
+      "biddingJsUrl": "localhost:50072/static/biddingLogic.js",
+      "protectedAppSignalsBiddingJsUrl": "localhost:50072/static/biddingLogic.js",
       "biddingWasmHelperUrl": "",
       "urlFetchPeriodMs": 13000000,
       "urlFetchTimeoutMs": 30000,

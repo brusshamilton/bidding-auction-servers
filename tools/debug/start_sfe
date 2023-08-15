@@ -21,17 +21,17 @@ else
     SERVER_DIR="$1"/execroot/__main__/bazel-out/k8-opt/bin
 fi
 
-export GLOG_v=2
+export GLOG_v=10
 export GLOG_logtostderr=1
-export GLOG_stderrthreshold=0
+export GLOG_stderrthreshold=10
 export GRPC_DNS_RESOLVER=native
 
 "$SERVER_DIR"/services/seller_frontend_service/server \
 --init_config_client="false" --port=50053 \
 --auction_server_host="localhost:50061" \
---key_value_signals_host="https://pubads.g.doubleclick.net/td/sts" \
---seller_origin_domain="https://securepubads.g.doubleclick.net" \
---buyer_server_hosts="{\"https://td.doubleclick.net\": \"localhost:50051\"}" \
+--key_value_signals_host="localhost:50072/cgi-bin/kv-cgi.py" \
+--seller_origin_domain="https://bidding-auction-server.example.com" \
+--buyer_server_hosts="{\"https://bidding-auction-server.example.com\": \"localhost:50051\"}" \
 --enable_seller_frontend_benchmarking="true" \
 --score_ads_rpc_timeout_ms=60000 \
 --get_bid_rpc_timeout_ms=60000 --key_value_signals_fetch_rpc_timeout_ms 60000 \

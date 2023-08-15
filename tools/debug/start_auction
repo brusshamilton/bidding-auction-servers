@@ -21,9 +21,9 @@ else
     SERVER_DIR="$1"/execroot/__main__/bazel-out/k8-opt/bin
 fi
 
-export GLOG_v=2
+export GLOG_v=10
 export GLOG_logtostderr=1
-export GLOG_stderrthreshold=0
+export GLOG_stderrthreshold=10
 export GRPC_DNS_RESOLVER=native
 
 "$SERVER_DIR"/services/auction_service/server \
@@ -37,15 +37,15 @@ export GRPC_DNS_RESOLVER=native
 --roma_timeout_ms="120000" \
 --seller_code_fetch_config='{
       "auctionJsPath": "",
-      "auctionJsUrl": "https://pubads.g.doubleclick.net/td/sjs",
+      "auctionJsUrl": "localhost:50072/static/decisionLogic.js",
       "urlFetchPeriodMs": 13000000,
       "urlFetchTimeoutMs": 30000,
-      "enableSellerDebugUrlGeneration": false,
-      "enableAdtechCodeLogging": false,
+      "enableSellerDebugUrlGeneration": true,
+      "enableAdtechCodeLogging": true,
       "enableReportResultUrlGeneration": false,
       "enableReportWinUrlGeneration": false,
-      "buyerReportWinJsUrls": {"https://td.doubleclick.net":"https://td.doubleclick.net/td/bjs"},
-      "protectedAppSignalsBuyerReportWinJsUrls": {"https://td.doubleclick.net":"https://td.doubleclick.net/td/bjs"}
+      "buyerReportWinJsUrls": {"https://bidding-auction-server.example.com":"localhost:50072/static/biddingLogic.js"},
+      "protectedAppSignalsBuyerReportWinJsUrls": {"https://bidding-auction-server.example.com":"localhost:50072/static/biddingLogic.js"}
     }' \
 --enable_otel_based_logging="false" \
 --consented_debug_token="" \

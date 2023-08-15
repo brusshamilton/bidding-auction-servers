@@ -21,7 +21,7 @@ else
     SERVER_DIR="$1"/execroot/__main__/bazel-out/k8-opt/bin
 fi
 
-export GLOG_v=2
+export GLOG_v=10
 export GLOG_logtostderr=1
 export GLOG_stderrthreshold=0
 export GRPC_DNS_RESOLVER=native
@@ -29,7 +29,7 @@ export GRPC_DNS_RESOLVER=native
 "$SERVER_DIR"/services/buyer_frontend_service/server \
 --init_config_client="false" --port=50051 \
 --bidding_server_addr="localhost:50057" \
---buyer_kv_server_addr="https://googleads.g.doubleclick.net/td/bts" \
+--buyer_kv_server_addr="localhost:50072/cgi-bin/kv-cgi.py" \
 --enable_buyer_frontend_benchmarking="true" \
 --generate_bid_timeout_ms=60000 --bidding_signals_load_timeout_ms 60000 \
 --protected_app_signals_generate_bid_timeout_ms=60000 \
